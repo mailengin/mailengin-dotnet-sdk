@@ -35,6 +35,8 @@ Create a protected GitHub environment named `release` and require maintainer app
 
 The workflow uses GitHub OIDC and `NuGet/login@v1` to obtain a short-lived key. Do not create a long-lived NuGet API key for CI.
 
+Before the first release, run the `Release` workflow manually from GitHub Actions. A manual run builds the package and verifies the OIDC login without publishing. Only a `v*` tag push publishes to NuGet.org.
+
 ## Prepare a Release
 
 Update `<Version>` in `src/MailEngin/MailEngin.csproj` and add release notes to `CHANGELOG.md`.
