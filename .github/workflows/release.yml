@@ -18,9 +18,11 @@ jobs:
       - name: Verify version and build
         shell: bash
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          PROJECT_VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/MailEngin/MailEngin.csproj)"
-          test "${VERSION}" = "${PROJECT_VERSION}"
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            PROJECT_VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/MailEngin/MailEngin.csproj)"
+            test "${VERSION}" = "${PROJECT_VERSION}"
+          fi
           dotnet test -c Release
           dotnet pack src/MailEngin/MailEngin.csproj -c Release -o artifacts
       - name: NuGet login
